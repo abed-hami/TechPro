@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'homepage.dart';
 import 'loadingpage.dart';
-import 'SearchBar.dart';
 
 void main() {
   runApp(const MyApp());

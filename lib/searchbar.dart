@@ -52,11 +52,11 @@ class _searchBarState extends State<searchBar> {
                 ),
               ],
             ),
-        SizedBox(height: 20,),
-        Container(
-          color: Colors.white,
-          height: 200,
-        ),
+            SizedBox(height: 20,),
+            Container(
+              color: Colors.white,
+              height: 200,
+            ),
             SizedBox(height: 20,),
 
             Row(
