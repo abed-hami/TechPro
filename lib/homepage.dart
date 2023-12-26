@@ -2,10 +2,12 @@ import 'package:floating_navbar/floating_navbar.dart';
 import 'package:floating_navbar/floating_navbar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:techprostore/products.dart';
 import 'login.dart';
 import 'wishlist.dart';
 import 'store.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'products.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,8 +20,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: NavBar(),
-    );
+      bottomNavigationBar: NavBar(),
+      body: Products(),
+
+
+      )
+
+    ;
   }
 }
 
@@ -33,8 +40,7 @@ class _NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: GNav(
+    return  GNav(
           backgroundColor: Colors.black,
           color: Colors.white,
           activeColor: Colors.white,
@@ -63,7 +69,7 @@ class _NavBarState extends State<NavBar> {
 
             )
           ]
-      ),
-    );
+      );
+
   }
 }
