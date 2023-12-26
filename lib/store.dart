@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:techprostore/homepage.dart';
+import 'home.dart';
+import 'productlist.dart';
 class Store extends StatefulWidget {
   const Store({super.key});
 
@@ -10,6 +12,8 @@ class Store extends StatefulWidget {
 class _StoreState extends State<Store> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+          body:Home()
+    );
   }
 }
