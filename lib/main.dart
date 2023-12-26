@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'homepage.dart';
 import 'loadingpage.dart';
+import 'SearchBar.dart';
+
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-
-      home: Loading(),
+      home: NavBar(), // Use the new name here
     );
   }
 }
