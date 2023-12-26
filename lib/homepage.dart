@@ -8,6 +8,7 @@ import 'wishlist.dart';
 import 'store.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'products.dart';
+import 'searchbar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,8 +22,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: NavBar(),
-      body: Products(),
-
+      body: Search(),
 
       )
 
@@ -41,32 +41,58 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     return  GNav(
-          backgroundColor: Colors.black,
-          color: Colors.white,
+          backgroundColor: Colors.grey.shade200,
+          color: Colors.black,
           activeColor: Colors.white,
-          tabBackgroundColor: Colors.grey.shade800,
+          tabBackgroundColor: Colors.lightBlue.shade500,
           gap:8,
 
           padding: EdgeInsets.all(16),
-          tabs:  const [
+          tabs:   [
             GButton(
               icon: Iconsax.home,
 
               text: 'Home',
-
+              onPressed: () {
+                // Navigate to another page when the button is pressed
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              },
             ),
             GButton(
               icon: Iconsax.heart,
               text: 'WishList',
+              onPressed: () {
+                // Navigate to another page when the button is pressed
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => WishList()),
+                );
+              },
             ),
             GButton(
               icon: Iconsax.shop,
               text: 'Shop',
+              onPressed: () {
+                // Navigate to another page when the button is pressed
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Store()),
+                );
+              },
             ),
             GButton(
               icon: Iconsax.user,
               text: 'login',
-
+              onPressed: () {
+                // Navigate to another page when the button is pressed
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Login()),
+                );
+              },
             )
           ]
       );

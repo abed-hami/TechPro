@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'homepage.dart';
+
 class WishList extends StatefulWidget {
   const WishList({super.key});
 
@@ -11,6 +13,8 @@ class WishList extends StatefulWidget {
 class _WishListState extends State<WishList> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+
+    );
   }
 }
