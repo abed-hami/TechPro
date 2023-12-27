@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -147,7 +148,8 @@ class _SearchState extends State<Search> {
                 ),
                 ),
                 ],
-                )
+                ),
+
             ],
           ),
         ),
@@ -155,3 +157,5 @@ class _SearchState extends State<Search> {
     );
   }
 }
+
+
