@@ -131,6 +131,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.8"
+  input_quantity:
+    dependency: "direct main"
+    description:
+      name: input_quantity
+      sha256: "27278a6780584aa59833f08def3a14bac42b72fc42a41d831a626d7ba7738615"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
   lints:
     dependency: transitive
     description:
