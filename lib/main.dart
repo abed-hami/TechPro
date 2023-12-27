@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'TechPro',
       home: Scaffold(
-        body: ProductList(),
+        body: Loading()
       ), // Use the new name here
     );
   }

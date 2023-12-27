@@ -3,80 +3,93 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:techprostore/productdetails.dart';
 import 'package:techprostore/singleProduct.dart';
-// main URL for REST pages
+
 const String _baseURL = 'techprostore.000webhostapp.com';
 
-// class to represent a row from the products table
-// note: cid is replaced by category name
-class Product{
-  int _pid;
-  String _name;
-  int _quantity;
-  double _price;
-  String _category;
+class Product {
+  int pid;
+  String name;
+  String description;
+  int quantity;
+  double price;
+  String category;
   String img;
 
-  Product(this._pid, this._name, this._quantity, this._price,this.img, this._category);
+  Product({
+    required this.pid,
+    required this.name,
+    required this.description,
+    required this.quantity,
+    required this.price,
+    required this.img,
+    required this.category,
+  });
 
   @override
   String toString() {
-    return 'PID: $_pid Name: $_name Quantity: $_quantity Price: \$$_price Category: $_category';
+    return 'PID: $pid Name: $name Quantity: $quantity Price: \$$price Category: $category';
   }
 }
 
-// list to hold products retrieved from getProducts
-List<Product> productitems = [];
-// asynchronously update _products list
+List<Product> productItems = [];
+
 void updateProducts(Function(bool success) update) async {
   try {
     final url = Uri.https(_baseURL, 'getProducts.php');
-    final response = await http.get(url)
-        .timeout(const Duration(seconds: 50)); // max timeout 5 seconds
-    productitems.clear(); // clear old products
-    if (response.statusCode == 200) { // if successful call
-      final jsonResponse = convert.jsonDecode(response.body); // create dart json object from json array
-      for (var row in jsonResponse) { // iterate over all rows in the json array
-        Product p = Product( // create a product object from JSON row object
-            int.parse(row['pid']),
-            row['name'],
-            int.parse(row['quantity']),
-            double.parse(row['price']),
-            row['img'],
-            row['category']);
-        productitems.add(p); // add the product object to the _products list
+    final response = await http.get(url).timeout(const Duration(seconds: 50));
+
+    productItems.clear();
+
+    if (response.statusCode == 200) {
+      final jsonResponse = convert.jsonDecode(response.body);
+
+      for (var row in jsonResponse) {
+        Product p = Product(
+          pid: int.parse(row['pid']),
+          name: row['name'],
+          description: row['description'],
+          quantity: int.parse(row['quantity']),
+          price: double.parse(row['price']),
+          img: row['img'],
+          category: row['category'],
+        );
+        productItems.add(p);
       }
-      update(true); // callback update method to inform that we completed retrieving data
+
+      update(true);
     }
-  }
-  catch(e) {
-    update(false); // inform through callback that we failed to get data
+  } catch (e) {
+    update(false);
   }
 }
 
-// searches for a single product using product pid
 void searchProduct(Function(String text) update, int pid) async {
   try {
-    final url = Uri.https(_baseURL, 'searchProduct.php', {'pid':'$pid'});
-    final response = await http.get(url)
-        .timeout(const Duration(seconds: 30));
-    productitems.clear();
+    final url = Uri.https(_baseURL, 'searchProduct.php', {'pid': '$pid'});
+    final response = await http.get(url).timeout(const Duration(seconds: 30));
+
+    productItems.clear();
+
     if (response.statusCode == 200) {
       final jsonResponse = convert.jsonDecode(response.body);
-      var row = jsonResponse[0];
-      Product p = Product(
-          int.parse(row['pid']),
-          row['name'],
-          int.parse(row['quantity']),
-          double.parse(row['price']),
-          row['img'],
-          row['category']
-      );
-      productitems.add(p);
-      update(p.toString());
+
+      if (jsonResponse.isNotEmpty) {
+        var row = jsonResponse[0];
+        Product p = Product(
+          pid: int.parse(row['pid']),
+          name: row['name'],
+          description: row['description'],
+          quantity: int.parse(row['quantity']),
+          price: double.parse(row['price']),
+          img: row['img'],
+          category: row['category'],
+        );
+        productItems.add(p);
+        update(p.toString());
+      }
     }
-  }
-  catch(e) {
-    update("can't load data");
+  } catch (e) {
+    update("Can't load data");
   }
 }
 
@@ -85,38 +98,24 @@ class ShowProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-
     return ListView.builder(
-      itemCount: productitems.length,
+      itemCount: (productItems.length / 3).ceil(),
       itemBuilder: (context, index) {
-        if (index % 3 == 0) {
-          // Start a new row for every three products
-          return Row(
+        int startIndex = index * 2;
+        int endIndex = (index + 1) * 2;
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Row(
             children: [
-              SizedBox(width: width * 0.05),
-              Expanded(
-                child: ProductCard(product: productitems[index]),
-              ),
-              SizedBox(width: width * 0.02),
-              Expanded(
-                child: index + 1 < productitems.length
-                    ? ProductCard(product: productitems[index + 1])
-                    : Container(),
-              ),
-              SizedBox(width: width * 0.02),
-              Expanded(
-                child: index + 2 < productitems.length
-                    ? ProductCard(product: productitems[index + 2])
-                    : Container(),
-              ),
-              SizedBox(width: width * 0.05),
+              if (startIndex < productItems.length)
+                Expanded(child: ProductCard(product: productItems[startIndex])),
+              SizedBox(width: 8.0),
+              if (endIndex < productItems.length)
+                Expanded(child: ProductCard(product: productItems[endIndex])),
             ],
-          );
-        } else {
-          // For the middle and last item in the row, we don't need to render anything
-          return Container();
-        }
+          ),
+        );
       },
     );
   }
@@ -131,56 +130,64 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-
-      child:Card(
+      child: Card(
         margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         elevation: 4.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
-        child: Container(
-          height: 150.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            image: DecorationImage(
-              image: AssetImage("assets/img1.jpg"), // Replace with appropriate image path
-              fit: BoxFit.cover,
-            ),
-          ), child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              product._name,
-              style: TextStyle(color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.bold),
+            Container(
+              height: 150.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
+                image: DecorationImage(
+                  image: AssetImage(product.img), // Replace with appropriate image path
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-            SizedBox(height: 4.0),
-            Text(
-              '\$${product._price.toStringAsFixed(2)}',
-              style: TextStyle(color: Colors.white, fontSize: 16.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    product.name,
+                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 4.0),
+                  Text(
+                    '\$${product.price.toStringAsFixed(2)}',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
-        ),
-
       ),
-      onTap: (){
+      onTap: () {
         Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const ProductDetails(),
-                // we send data using the settings and pass to it an Employee object
-                settings: RouteSettings(arguments: ProductD(product._pid, product._name,product._quantity,product._price ,"assets/img1.jpg", product._category))
-            )
+          MaterialPageRoute(
+            builder: (context) => const ProductDetails(),
+            settings: RouteSettings(
+              arguments: ProductD(
+                product.pid,
+                product.name,
+                product.description,
+                product.quantity,
+                product.price,
+                product.img,
+                product.category,
+              ),
+            ),
+          ),
         );
-
       },
     );
-
   }
 }
-
-
-
-
-
-
 

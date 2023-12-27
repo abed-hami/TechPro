@@ -1,6 +1,6 @@
-
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:flutter/material.dart';
-import 'homepage.dart';
+import 'admin.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -10,6 +10,54 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final TextEditingController _controller = TextEditingController();
+  final EncryptedSharedPreferences _encryptedData =
+  EncryptedSharedPreferences();
+
+  void update(bool success) {
+    if (success) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => const Admin()));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to login as admin')),
+      );
+    }
+  }
+
+  Future<void> checkLogin() async {
+    if (_controller.text.toString().trim() == '') {
+      update(false);
+    } else {
+      try {
+        await _encryptedData.setString(
+          'myKey',
+          _controller.text.toString(),
+        );
+        update(true);
+      } catch (e) {
+        update(false);
+      }
+    }
+  }
+
+  void checkSavedData() async {
+    final myKey = await _encryptedData.getString('myKey');
+    if (myKey != null && myKey.isNotEmpty) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const Admin(),
+        ),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkSavedData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,14 +67,24 @@ class _LoginState extends State<Login> {
           child: Column(
             children: [
               SizedBox(height: 20,),
-              Icon(Icons.lock, size: 100,color: Colors.blue.shade700,
+              Icon(
+                Icons.lock,
+                size: 100,
+                color: Colors.blue.shade700,
               ),
               SizedBox(height: 50,),
-              Text("Welcome back !",style: TextStyle(color: Colors.grey[700],fontSize: 18),),
+              Text(
+                "Welcome back !",
+                style: TextStyle(color: Colors.grey[700], fontSize: 18),
+              ),
               const SizedBox(height: 30,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: TextField(
+                  obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  controller: _controller,
                   decoration: InputDecoration(
                     enabledBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
@@ -42,27 +100,10 @@ class _LoginState extends State<Login> {
                 ),
               ),
               const SizedBox(height: 10,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey.shade400),
-                    ),
-                    fillColor: Colors.grey.shade200,
-                    filled: true,
-                    hintText: "Password123..",
-                    hintStyle: TextStyle(color: Colors.grey[500]),
-                  ),
-                ),
-              ),
               SizedBox(height: 30,),
               GestureDetector(
-                onTap: () {
-                  // Add your sign-in logic here
+                onTap: ()  {
+                   checkLogin();
                 },
                 child: Container(
                   padding: const EdgeInsets.all(25),
@@ -73,7 +114,7 @@ class _LoginState extends State<Login> {
                   ),
                   child: const Center(
                     child: Text(
-                      "Sign In",
+                      "Login",
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
