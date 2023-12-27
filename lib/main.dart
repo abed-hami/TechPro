@@ -5,6 +5,7 @@ import 'home.dart';
 import 'homepage.dart';
 import 'loadingpage.dart';
 import 'productlist.dart';
+import 'login.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'TechPro',
       home: Scaffold(
-        body: Loading()
+        body: Login()
       ), // Use the new name here
     );
   }
