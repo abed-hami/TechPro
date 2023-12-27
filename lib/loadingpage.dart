@@ -21,14 +21,24 @@ class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FlutterSplashScreen.gif(
-        useImmersiveMode: true,
-        gifPath: 'assets/gif.gif',
-        gifWidth: 269,
-        gifHeight: 474,
+      body:FlutterSplashScreen.scale(
+        gradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.lightBlue,
+            Colors.blue,
+          ],
+        ),
+        childWidget: SizedBox(
+          height: 50,
+          child: Image.asset("assets/gif.gif"),
+        ),
+        duration: const Duration(milliseconds: 3500),
+        animationDuration: const Duration(milliseconds: 1500),
+        onAnimationEnd: () => debugPrint("On Scale End"),
         nextScreen: const HomePage(),
-        duration: const Duration(milliseconds: 3515),
-      ),
+      )
     );
   }
 }

@@ -1,12 +1,14 @@
 import 'dart:convert' as convert;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:techprostore/productdetails.dart';
+import 'package:techprostore/singleProduct.dart';
 // main URL for REST pages
 const String _baseURL = 'techprostore.000webhostapp.com';
 
 // class to represent a row from the products table
 // note: cid is replaced by category name
-class Product {
+class Product{
   int _pid;
   String _name;
   int _quantity;
@@ -21,6 +23,7 @@ class Product {
     return 'PID: $_pid Name: $_name Quantity: $_quantity Price: \$$_price Category: $_category';
   }
 }
+
 // list to hold products retrieved from getProducts
 List<Product> productitems = [];
 // asynchronously update _products list
@@ -127,22 +130,23 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-      elevation: 4.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Container(
-        height: 150.0,
-        decoration: BoxDecoration(
+    return GestureDetector(
+
+      child:Card(
+        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        elevation: 4.0,
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
-          image: DecorationImage(
-            image: AssetImage("assets/img1.jpg"), // Replace with appropriate image path
-            fit: BoxFit.cover,
-          ),
         ),
-        child: Column(
+        child: Container(
+          height: 150.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            image: DecorationImage(
+              image: AssetImage("assets/img1.jpg"), // Replace with appropriate image path
+              fit: BoxFit.cover,
+            ),
+          ), child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -157,8 +161,20 @@ class ProductCard extends StatelessWidget {
             ),
           ],
         ),
+        ),
+
       ),
+      onTap: (){
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const ProductDetails(),
+                // we send data using the settings and pass to it an Employee object
+                settings: RouteSettings(arguments: ProductD(product._pid, product._name,product._quantity,product._price ,"assets/img1.jpg", product._category))
+            )
+        );
+
+      },
     );
+
   }
 }
 
