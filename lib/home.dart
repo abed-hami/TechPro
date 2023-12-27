@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:techprostore/singleproduct.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:techprostore/showproduct.dart';
 
 
 class Home extends StatefulWidget {
@@ -32,16 +33,21 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(actions: [
-          IconButton(onPressed: !_load ? null : () {
-            setState(() {
-              _load = false; // show progress bar
-              updateProducts(update); // update data asynchronously
-            });
-          }, icon: const Icon(Icons.refresh)),
+        appBar: AppBar(
+
+          backgroundColor: Colors.blue.shade500,
+          actions: [
+
+            IconButton(onPressed: !_load ? null : () {
+              setState(() {
+                _load = false; // show progress bar
+                updateProducts(update); // update data asynchronously
+              });
+            }, icon:  Icon(Iconsax.bag_2, size: 30,)),
+
 
         ],
-          title: const Text('Available Products'),
+          title:  Text('Available Products', style: TextStyle(color: Colors.white,fontSize: 23),),
           centerTitle: true,
         ),
         // load products or progress bar

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
-import 'singleproduct.dart';
+import 'showproduct.dart';
 
 
 class ProductList extends StatefulWidget {
@@ -34,16 +34,18 @@ class _ProductListState extends State<ProductList> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: AppBar(actions: [
+        appBar: AppBar(
+          backgroundColor: Colors.white70,
+          actions: [
           IconButton(onPressed: !_load ? null : () {
             setState(() {
               _load = false; // show progress bar
               updateProducts(update); // update data asynchronously
             });
-          }, icon: const Icon(Icons.refresh)),
+          }, icon:  Icon(Icons.refresh, color: Colors.blue.shade500,)),
 
         ],
-          title: const Text('Available Products'),
+          title: const Text('Available Products', style: TextStyle(color: Colors.black),),
           centerTitle: true,
         ),
        body: Home()
