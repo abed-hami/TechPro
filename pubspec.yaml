@@ -43,7 +43,7 @@ dependencies:
   another_flutter_splash_screen: ^1.2.0
   carousel_slider: ^4.0.0
   http: ^1.1.0
-  encrypted_shared_preferences: ^3.0.1
+  input_quantity: ^2.2.0
 
 dev_dependencies:
   flutter_test:
