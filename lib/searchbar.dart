@@ -40,7 +40,7 @@ class _SearchState extends State<Search> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Tech-Pro",
+                          "Tech-Pro Store",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 24,
