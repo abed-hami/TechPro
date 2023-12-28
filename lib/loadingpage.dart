@@ -31,13 +31,13 @@ class _LoadingState extends State<Loading> {
           ],
         ),
         childWidget: SizedBox(
-          height: 50,
-          child: Image.asset("assets/gif.gif"),
+          height: 300,
+          child: Image.asset("assets/logoLoad.jpg"),
         ),
         duration: const Duration(milliseconds: 3500),
         animationDuration: const Duration(milliseconds: 1500),
         onAnimationEnd: () => debugPrint("On Scale End"),
-        nextScreen: const HomePage(),
+         nextScreen: const HomePage(),
       )
     );
   }
