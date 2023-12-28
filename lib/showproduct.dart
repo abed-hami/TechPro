@@ -63,6 +63,26 @@ void updateProducts(Function(bool success) update) async {
   }
 }
 
+void deleteProduct(Function(bool success, String message) callback, int pid) async {
+  try {
+    final url = Uri.https(_baseURL, 'deleteProduct.php', {'pid': '$pid'});
+    final response = await http.delete(url).timeout(const Duration(seconds: 30));
+
+    if (response.statusCode == 200) {
+      final jsonResponse = convert.jsonDecode(response.body);
+
+      if (jsonResponse['success']) {
+        callback(true, jsonResponse['message']);
+      } else {
+        callback(false, jsonResponse['message']);
+      }
+    }
+  } catch (e) {
+    callback(false, "Error: $e");
+  }
+}
+
+
 void searchProduct(Function(String text) update, int pid) async {
   try {
     final url = Uri.https(_baseURL, 'searchProduct.php', {'pid': '$pid'});
