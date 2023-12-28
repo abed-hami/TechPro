@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'adminproducts.dart';
+
 class Admin extends StatelessWidget {
   const Admin({super.key});
 
@@ -14,7 +16,11 @@ class Admin extends StatelessWidget {
                 SizedBox(height:40),
                 GestureDetector(
                   onTap: () {
-                    ;
+                    Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => AdminProduct()
+                        )
+                    );
                   },
                   child: Container(
                     padding: const EdgeInsets.all(25),
