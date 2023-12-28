@@ -31,7 +31,7 @@ class _SearchState extends State<Search> {
             children: [
               Container(
                 width: screenWidth,
-                color: Colors.blue.shade900,
+                color: Colors.blue.shade500,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
