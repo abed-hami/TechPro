@@ -83,64 +83,26 @@ void deleteProduct(Function(bool success, String message) callback, int pid) asy
 }
 
 
-void searchProduct(Function(String text) update, int pid) async {
-  try {
-    final url = Uri.https(_baseURL, 'searchProduct.php', {'pid': '$pid'});
-    final response = await http.get(url).timeout(const Duration(seconds: 30));
-
-    productItems.clear();
-
-    if (response.statusCode == 200) {
-      final jsonResponse = convert.jsonDecode(response.body);
-
-      if (jsonResponse.isNotEmpty) {
-        var row = jsonResponse[0];
-        Product p = Product(
-          pid: int.parse(row['pid']),
-          name: row['name'],
-          description: row['description'],
-          quantity: int.parse(row['quantity']),
-          price: double.parse(row['price']),
-          img: row['img'],
-          category: row['category'],
-        );
-        productItems.add(p);
-        update(p.toString());
-      }
-    }
-  } catch (e) {
-    update("Can't load data");
-  }
-}
-
 class ShowProducts extends StatelessWidget {
   const ShowProducts({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: (productItems.length / 3).ceil(),
-      itemBuilder: (context, index) {
-        int startIndex = index * 2;
-        int endIndex = (index + 1) * 2;
+    const int crossAxisCount = 2;
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Row(
-            children: [
-              if (startIndex < productItems.length)
-                Expanded(child: ProductCard(product: productItems[startIndex])),
-              SizedBox(width: 8.0),
-              if (endIndex < productItems.length)
-                Expanded(child: ProductCard(product: productItems[endIndex])),
-            ],
-          ),
-        );
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
+        crossAxisSpacing: 8.0,
+        mainAxisSpacing: 8.0,
+      ),
+      itemCount: productItems.length,
+      itemBuilder: (context, index) {
+        return ProductCard(product: productItems[index]);
       },
     );
   }
 }
-
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -150,8 +112,25 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const ProductDetails(),
+            settings: RouteSettings(
+              arguments: ProductD(
+                product.pid,
+                product.name,
+                product.description,
+                product.quantity,
+                product.price,
+                product.img,
+                product.category,
+              ),
+            ),
+          ),
+        );
+      },
       child: Card(
-        margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         elevation: 4.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
@@ -159,13 +138,21 @@ class ProductCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              height: 150.0,
-              decoration: BoxDecoration(
+            Expanded(
+              child: ClipRRect(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
-                image: DecorationImage(
-                  image: AssetImage(product.img), // Replace with appropriate image path
+                child: product.img.isNotEmpty
+                    ? Image.network(
+                  product.img,
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Center(
+                      child: Text('Image Load Failed'),
+                    );
+                  },
+                )
+                    : Center(
+                  child: Text('Image URL is empty'),
                 ),
               ),
             ),
@@ -189,27 +176,13 @@ class ProductCard extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const ProductDetails(),
-            settings: RouteSettings(
-              arguments: ProductD(
-                product.pid,
-                product.name,
-                product.description,
-                product.quantity,
-                product.price,
-                product.img,
-                product.category,
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 }
+
+
+
+
 
 
 

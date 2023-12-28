@@ -4,6 +4,7 @@ import 'package:floating_navbar/floating_navbar.dart';
 import 'package:floating_navbar/floating_navbar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:techprostore/cart.dart';
 import 'package:techprostore/products.dart';
 import 'login.dart';
 import 'wishlist.dart';
@@ -86,7 +87,7 @@ class _NavBarState extends State<NavBar> {
                 // Navigate to another page when the button is pressed
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WishList()),
+                  MaterialPageRoute(builder: (context) => CartDisplay()),
                 );
               },
             ),
