@@ -14,7 +14,6 @@ class AdminProduct extends StatelessWidget {
   }
 }
 
-// main URL for REST pages
 const String _baseURL = 'techprostore.000webhostapp.com';
 
 class Product {
@@ -71,6 +70,20 @@ void updateProducts(Function(bool success) update) async {
     update(false);
   }
 }
+
+void deleteProduct(Function(bool success, String message) callback, int pid) async {
+  try {
+    final url = Uri.https(
+      _baseURL,
+      'deleteProduct.php',
+      {'pid': '$pid'},
+    );
+    final response = await http.get(url).timeout(const Duration(seconds: 5));
+  }catch(e){
+    print(e);
+  }
+}
+
 
 void searchProduct(Function(Product) update, String name) async {
   try {
@@ -132,7 +145,13 @@ class ShowProducts extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.delete, color: Colors.red),
                   onPressed: () {
-                    // Call the onDelete callback when delete button is pressed
+                    deleteProduct((bool success, String message) {
+                      if (success) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(message)),
+                        );
+                      }
+                    }, products[index].pid);
                   },
                 ),
               ],
@@ -154,8 +173,6 @@ class ViewList extends StatefulWidget {
 class _ViewListState extends State<ViewList> {
   bool _load = false;
   bool _isSearching = false;
-
-  // Use a separate list to store the original products
   List<Product> _originalProducts = [];
 
   void update(bool success) {
@@ -178,14 +195,12 @@ class _ViewListState extends State<ViewList> {
   void endSearch() {
     setState(() {
       _isSearching = false;
-      // Restore the original products when ending the search
       _products = List.from(_originalProducts);
     });
   }
 
   @override
   void initState() {
-    // Save the original products when the widget is initialized
     _originalProducts = List.from(_products);
     updateProducts(update);
     super.initState();
@@ -209,16 +224,14 @@ class _ViewListState extends State<ViewList> {
           ),
           IconButton(
             onPressed: () {
-
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => SearchIt(
-                      startSearch: startSearch,
-                      endSearch: endSearch,
-                    ),
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => SearchIt(
+                    startSearch: startSearch,
+                    endSearch: endSearch,
                   ),
-                );
-
+                ),
+              );
             },
             icon: Icon(Icons.search),
           )
@@ -258,6 +271,8 @@ class SearchIt extends StatefulWidget {
 class _SearchItState extends State<SearchIt> {
   final TextEditingController _controller = TextEditingController();
   List<Product> _searchedProducts = [];
+
+
 
   @override
   void dispose() {
@@ -313,13 +328,12 @@ class _SearchItState extends State<SearchIt> {
             ElevatedButton(
               onPressed: () {
                 getProduct();
-                FocusScope.of(context).unfocus(); // Close keyboard on button press
+                FocusScope.of(context).unfocus();
               },
               child: const Text('Search', style: TextStyle(fontSize: 18)),
             ),
             const SizedBox(height: 20),
-            // Display all product information with delete button
-            for (Product product in _searchedProducts)
+            for(Product product in _searchedProducts)
               Card(
                 margin: const EdgeInsets.symmetric(vertical: 8),
                 elevation: 4,
@@ -332,7 +346,13 @@ class _SearchItState extends State<SearchIt> {
                     icon: Icon(Icons.delete, color: Colors.red),
                     onPressed: () {
                       setState(() {
-                        _searchedProducts.remove(product);
+                        deleteProduct((bool success, String message) {
+                          if (success) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(message)),
+                            );
+                          }
+                        }, product.pid);
                       });
                     },
                   ),
