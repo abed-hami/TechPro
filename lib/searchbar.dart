@@ -31,7 +31,7 @@ class _SearchState extends State<Search> {
             children: [
               Container(
                 width: screenWidth,
-                color: Colors.blue.shade900,
+                color: Colors.blue.shade500,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,7 +111,7 @@ class _SearchState extends State<Search> {
                 items: [
                   Image.network("https://cdn.zeebiz.com/sites/default/files/styles/zeebiz_850x478/public/2022/12/15/216399-christmas-discounts.jpg?itok=LQW4C3JY"),
                   Image.network("https://www.91-cdn.com/hub/wp-content/uploads/2023/10/image1-2.png", fit: BoxFit.cover),
-                  Image.network("https://www.91-cdn.com/hub/wp-content/uploads/2023/10/image1-2.png", fit: BoxFit.cover),
+                  Image.network("https://pbs.twimg.com/media/DRNkSH6UMAEN-NW.jpg", fit: BoxFit.cover),
                 ],
               ),
               SizedBox(height: 20),
@@ -121,15 +121,15 @@ class _SearchState extends State<Search> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text("View More", style: TextStyle(color: Colors.white)),
-                    Icon(Icons.arrow_circle_right, color: Colors.white),
+                    Text("View More", style: TextStyle(color: Colors.black)),
+                    Icon(Icons.arrow_circle_right, color: Colors.black),
                   ],
                 ),
               ),
               SizedBox(height: 20),
               buildProductRow("https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/MSFT-surfacelaptopgo2-mobile-hero-RE4Ypdj?scl=1", "https://static.skyassets.com/contentstack/assets/blt143e20b03d72047e/blt1c33e1158f1c5ecf/6319d97c454b1c2ebb3f4037/Carousel_iPhone14Plus_Purple_Placement01-PreOrder.png"),
               SizedBox(height: 20),
-              buildProductRow("https://www.tomorrowsworldtoday.com/wp-content/uploads/2023/01/Image3-26.jpg", "https://zoodmall.com/cdn-cgi/image/w=500,fit=contain,f=auto/https://images2.zoodmall.com/https%3A/www.higalo.com/DynamicImages/ProductsImages/Product-Media-Pic-405-637486349617672328.jpg"),
+              buildProductRow("https://files.refurbed.com/pi/asus-zenbook-14-i5-1592206960.jpg", "https://zoodmall.com/cdn-cgi/image/w=500,fit=contain,f=auto/https://images2.zoodmall.com/https%3A/www.higalo.com/DynamicImages/ProductsImages/Product-Media-Pic-405-637486349617672328.jpg"),
             ],
           ),
         ),
