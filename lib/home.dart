@@ -43,7 +43,7 @@ class _HomeState extends State<Home> {
                 _load = false; // show progress bar
                 updateProducts(update); // update data asynchronously
               });
-            }, icon:  Icon(Iconsax.bag_2, size: 30,)),
+            }, icon:  Icon(Iconsax.refresh, size: 30,)),
 
 
         ],
