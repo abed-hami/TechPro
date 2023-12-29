@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:techprostore/searchit.dart';
+import 'package:techprostore/updateProduct.dart';
 
 class AdminProduct extends StatelessWidget {
   const AdminProduct({Key? key}) : super(key: key);
@@ -22,6 +23,7 @@ class Product {
   String description;
   int quantity;
   double price;
+  String img;
   String category;
 
   Product(
@@ -30,6 +32,7 @@ class Product {
       this.description,
       this.quantity,
       this.price,
+      this.img,
       this.category,
       );
 
@@ -59,6 +62,7 @@ void updateProducts(Function(bool success) update) async {
           row['description'],
           int.parse(row['quantity']),
           double.parse(row['price']),
+          row['img'],
           row['category'],
         );
         _products.add(p);
@@ -106,6 +110,7 @@ void searchProduct(Function(Product) update, String name) async {
           row['description'],
           int.parse(row['quantity']),
           double.parse(row['price']),
+          row['img'],
           row['category'],
         );
         _searchResults.add(p);
@@ -113,7 +118,7 @@ void searchProduct(Function(Product) update, String name) async {
       }
     }
   } catch (e) {
-    update(Product(-1, 'Error', 'Error', 0, 0.0, 'Error'));
+    update(Product(-1, 'Error', 'Error', 0, 0.0, 'Error','Error'));
   }
 }
 
@@ -142,17 +147,33 @@ class ShowProducts extends StatelessWidget {
                     style: const TextStyle(fontSize: 16),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.delete, color: Colors.red),
-                  onPressed: () {
-                    deleteProduct((bool success, String message) {
-                      if (success) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(message)),
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.edit, color: Colors.blue),
+                      onPressed: () {
+                        // Navigate to the edit screen
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => EditProduct(products[index].pid),
+                              settings: RouteSettings(arguments: products[index] )
+                          ),
                         );
-                      }
-                    }, products[index].pid);
-                  },
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.delete, color: Colors.red),
+                      onPressed: () {
+                        deleteProduct((bool success, String message) {
+                          if (success) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(message)),
+                            );
+                          }
+                        }, products[index].pid);
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -162,6 +183,8 @@ class ShowProducts extends StatelessWidget {
     );
   }
 }
+
+
 
 class ViewList extends StatefulWidget {
   const ViewList({Key? key}) : super(key: key);
@@ -342,19 +365,33 @@ class _SearchItState extends State<SearchIt> {
                     product.toString(),
                     style: const TextStyle(fontSize: 16),
                   ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete, color: Colors.red),
-                    onPressed: () {
-                      setState(() {
-                        deleteProduct((bool success, String message) {
-                          if (success) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(message)),
-                            );
-                          }
-                        }, product.pid);
-                      });
-                    },
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.edit, color: Colors.blue),
+                        onPressed: () {
+                          // Navigate to the edit screen
+
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red),
+                        onPressed: () {
+                          setState(() {
+                            deleteProduct((bool success, String message) {
+                              if (success) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(message)),
+                                );
+                              }
+                            }, product.pid);
+
+                            updateProducts(update as Function(bool success));
+                          });
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),

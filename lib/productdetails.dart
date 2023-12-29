@@ -24,6 +24,9 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 
+
+
+
   @override
   Widget build(BuildContext context) {
     final product = ModalRoute.of(context)!.settings.arguments as ProductD;

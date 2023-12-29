@@ -32,7 +32,7 @@ class _LoadingState extends State<Loading> {
         ),
         childWidget: SizedBox(
           height: 50,
-          child: Image.asset("assets/gif.gif"),
+          child: Image.asset("assets/gif.gif", height: 100, width: 100,),
         ),
         duration: const Duration(milliseconds: 3500),
         animationDuration: const Duration(milliseconds: 1500),

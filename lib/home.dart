@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:techprostore/cartProduct.dart';
 import 'package:techprostore/showproduct.dart';
+
+import 'cart.dart';
 
 
 class Home extends StatefulWidget {
@@ -43,7 +46,15 @@ class _HomeState extends State<Home> {
                 _load = false; // show progress bar
                 updateProducts(update); // update data asynchronously
               });
-            }, icon:  Icon(Iconsax.refresh, size: 30,)),
+            }, icon:  Icon(Iconsax.refresh, size: 20,)),
+            IconButton(onPressed: !_load ? null : () {
+              setState(() {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) =>  CartDisplay()));
+                // update data asynchronously
+              });
+            }, icon:  Icon(Iconsax.bag_2, size: 20,)),
+            
 
 
         ],

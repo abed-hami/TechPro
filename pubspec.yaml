@@ -46,6 +46,8 @@ dependencies:
   encrypted_shared_preferences: ^3.0.1
   input_quantity: ^1.0.0
 
+  badges: ^2.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

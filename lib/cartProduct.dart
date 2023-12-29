@@ -6,6 +6,8 @@ class CartProduct{
   double total;
 
 
+
+
   CartProduct(this.id, this.name, this.price,this.total, this.img);
 
   @override
@@ -26,7 +28,20 @@ class CartProduct{
       price.hashCode ^
       img.hashCode ^
       total.hashCode ;
+
+  void booly(bool x, List<dynamic> y){
+    if(x){
+      y.clear();
+    }
+  }
+
+
+
+
 }
+
+
+
 
 
 List<CartProduct> cartproducts=[];
