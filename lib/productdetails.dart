@@ -133,43 +133,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     SizedBox(
                       height: 10,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        // Add your sign-in logic here
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(20),
-                        margin: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.blue.shade700,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.shopping_cart,
-                              color: Colors.white,
-                              size: 24,
-                            ),
-                            SizedBox(
-                                width:
-                                    8), // Adjust the spacing between the icon and text
-                            Text(
-                              "Buy Now!",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
+
                     GestureDetector(
                       onTap: () {
                         setState(() {
@@ -180,20 +144,20 @@ class _ProductDetailsState extends State<ProductDetails> {
                         padding: const EdgeInsets.all(20),
                         margin: const EdgeInsets.symmetric(horizontal: 10),
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade300,
+                          color: Colors.blue.shade400,
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
                             color: Colors
-                                .blue.shade600, // Set the border color here
+                                .white, // Set the border color here
                             width: 1, // Set the border width if needed
                           ),
                         ),
-                        child: Row(
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
                               Icons.add_box_outlined,
-                              color: Colors.blue.shade600,
+                              color: Colors.white,
                               size: 24,
                             ),
                             SizedBox(
@@ -202,7 +166,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             Text(
                               "Add to cart!",
                               style: TextStyle(
-                                color: Colors.blue.shade600,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ),

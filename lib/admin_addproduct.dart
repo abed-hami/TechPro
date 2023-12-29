@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
@@ -10,23 +9,19 @@ const String _baseURL = 'https://techprostore.000webhostapp.com';
 EncryptedSharedPreferences _encryptedData = EncryptedSharedPreferences();
 
 class AddCategory extends StatefulWidget {
-  const AddCategory({super.key});
+  const AddCategory({Key? key});
 
   @override
   State<AddCategory> createState() => _AddCategoryState();
 }
 
 class _AddCategoryState extends State<AddCategory> {
-  // creates a unique key to be used by the form
-  // this key is necessary for validation
-
   TextEditingController _controllerQuantity = TextEditingController();
   TextEditingController _controllerName = TextEditingController();
   TextEditingController _controllerPrice = TextEditingController();
   TextEditingController _controllerDescription = TextEditingController();
   TextEditingController _controllerImage = TextEditingController();
-  TextEditingController _controllerCategory = TextEditingController();
-  // the below variable is used to display the progress bar when retrieving data
+  int? selectedValue;
   bool _loading = false;
 
   @override
@@ -35,7 +30,6 @@ class _AddCategoryState extends State<AddCategory> {
     _controllerName.dispose();
     _controllerPrice.dispose();
     _controllerDescription.dispose();
-    _controllerCategory.dispose();
     _controllerImage.dispose();
     super.dispose();
   }
@@ -50,20 +44,17 @@ class _AddCategoryState extends State<AddCategory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Add Product'),
-          centerTitle: true,
-          // the below line disables the back button on the AppBar
-          automaticallyImplyLeading: false,
-        ),
-        body: SingleChildScrollView(
-            child: Center(
-                child: Form(
-          // key to uniquely identify the form when performing validation
-          child: Column(
-            children: <Widget>[
-              const SizedBox(height: 10),
-              SizedBox(
+      appBar: AppBar(
+        title: const Text('Add Product'),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Form(
+            child: Column(
+              children: <Widget>[
+                const SizedBox(height: 10),
+                SizedBox(
                   width: 200,
                   child: TextFormField(
                     controller: _controllerName,
@@ -77,15 +68,16 @@ class _AddCategoryState extends State<AddCategory> {
                       }
                       return null;
                     },
-                  )),
-              const SizedBox(height: 10),
-              SizedBox(
+                  ),
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
                   width: 200,
                   child: TextFormField(
                     controller: _controllerDescription,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'Enter  Description',
+                      hintText: 'Enter Description',
                     ),
                     validator: (String? value) {
                       if (value == null || value.isEmpty) {
@@ -93,9 +85,10 @@ class _AddCategoryState extends State<AddCategory> {
                       }
                       return null;
                     },
-                  )),
-              const SizedBox(height: 10),
-              SizedBox(
+                  ),
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
                   width: 200,
                   child: TextFormField(
                     controller: _controllerPrice,
@@ -109,9 +102,10 @@ class _AddCategoryState extends State<AddCategory> {
                       }
                       return null;
                     },
-                  )),
-              const SizedBox(height: 10),
-              SizedBox(
+                  ),
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
                   width: 200,
                   child: TextFormField(
                     controller: _controllerQuantity,
@@ -125,85 +119,114 @@ class _AddCategoryState extends State<AddCategory> {
                       }
                       return null;
                     },
-                  )),
-              const SizedBox(height: 10),
-              SizedBox(
+                  ),
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
                   width: 200,
                   child: TextFormField(
                     controller: _controllerImage,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'Enter Image url',
+                      hintText: 'Enter Image URL',
                     ),
                     validator: (String? value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter image';
+                        return 'Please enter image URL';
                       }
                       return null;
                     },
-                  )),
-              const SizedBox(height: 10),
-              SizedBox(
+                  ),
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
                   width: 200,
-                  child: TextFormField(
-                    controller: _controllerCategory,
-                    decoration: const InputDecoration(
+                  child: DropdownButtonFormField<int>(
+                    value: selectedValue,
+                    onChanged: (int? newValue) {
+                      setState(() {
+                        selectedValue = newValue;
+                      });
+                    },
+                    items: <DropdownMenuItem<int>>[
+                      DropdownMenuItem<int>(
+                        value: 1,
+                        child: Text('Laptops'),
+                      ),
+                      DropdownMenuItem<int>(
+                        value: 2,
+                        child: Text('Phones'),
+                      ),
+                      DropdownMenuItem<int>(
+                        value: 3,
+                        child: Text('Accessories'),
+                      ),
+                      DropdownMenuItem<int>(
+                        value: 4,
+                        child: Text('Monitors and PC'),
+                      ),
+                    ],
+                    decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'Enter Category',
+                      hintText: 'Select Category',
                     ),
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter Category';
+                    validator: (int? value) {
+                      if (value == null) {
+                        return 'Please select a Category';
                       }
                       return null;
                     },
-                  )),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                // we need to prevent the user from sending another request, while current
-                // request is being processed
-                onPressed: _loading
-                    ? null
-                    : () {
-                        // disable button while loading
-
-                        setState(() {
-                          _loading = true;
-                        });
-                        saveCategory(
-                          update,
-                          _controllerName.text.toString(),
-                          int.parse(_controllerQuantity.text),
-                          int.parse(_controllerPrice.text),
-                          _controllerDescription.text.toString(),
-                          int.parse(_controllerCategory.text),
-                          _controllerImage.text.toString(),
-
-                        );
-
-                },
-                child: const Text('Submit'),
-              ),
-              const SizedBox(height: 10),
-              Visibility(
-                  visible: _loading, child: const CircularProgressIndicator())
-            ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: _loading
+                      ? null
+                      : () {
+                    setState(() {
+                      _loading = true;
+                    });
+                    saveCategory(
+                      update,
+                      _controllerName.text.toString(),
+                      int.parse(_controllerQuantity.text),
+                      int.parse(_controllerPrice.text),
+                      _controllerDescription.text.toString(),
+                      selectedValue!,
+                      _controllerImage.text.toString(),
+                    );
+                  },
+                  child: const Text('Submit'),
+                ),
+                const SizedBox(height: 10),
+                Visibility(
+                  visible: _loading,
+                  child: const CircularProgressIndicator(),
+                )
+              ],
+            ),
           ),
-        ))));
+        ),
+      ),
+    );
   }
 }
 
-// below function sends the cid, name and key using http post to the REST service
-void saveCategory(Function(String text) update, String name, int quantity, int price, String description, int category, String image) async {
+void saveCategory(
+    Function(String text) update,
+    String name,
+    int quantity,
+    int price,
+    String description,
+    int category,
+    String image,
+    ) async {
   try {
-    // we need to first retrieve and decrypt the key
-
-    // send a JSON object using http post
-    final response = await http
-        .post(Uri.parse('$_baseURL/save.php'),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-            }, // convert the cid, name and key to a JSON object
+    final response = await http.post(
+      Uri.parse('$_baseURL/save.php'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
       body: convert.jsonEncode({
         'name': name,
         'quantity': quantity,
@@ -211,12 +234,9 @@ void saveCategory(Function(String text) update, String name, int quantity, int p
         'description': description,
         'category': category,
         'image': image,
-
-
       }),
     ).timeout(const Duration(seconds: 5));
     if (response.statusCode == 200) {
-      // if successful, call the update function
       update(response.body);
     }
   } catch (e) {

@@ -114,13 +114,13 @@ class _SearchPageState extends State<SearchPage> {
                                 Text(
                                   _searchResults[index].name,
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 Text(
-                                  _searchResults[index].description,
-                                  style: TextStyle(fontSize: 12),
+                                  "\$${_searchResults[index].price}" ,
+                                  style: TextStyle(fontSize: 14),
                                 ),
                               ],
                             ),

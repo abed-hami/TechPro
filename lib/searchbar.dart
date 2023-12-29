@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:techprostore/store.dart';
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -20,23 +21,38 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      backgroundColor: Colors.grey.shade100,
       body: ListView(
         children: [
           _buildHeader(),
           SizedBox(height: 20),
           _buildCarousel(),
-          SizedBox(height: 20),
-          _buildViewMore(),
-          SizedBox(height: 20),
-          _buildProductRow(
-            "https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/MSFT-surfacelaptopgo2-mobile-hero-RE4Ypdj?scl=1",
-            "https://static.skyassets.com/contentstack/assets/blt143e20b03d72047e/blt1c33e1158f1c5ecf/6319d97c454b1c2ebb3f4037/Carousel_iPhone14Plus_Purple_Placement01-PreOrder.png",
-          ),
-          SizedBox(height: 20),
-          _buildProductRow(
-            "https://files.refurbed.com/pi/asus-zenbook-14-i5-1592206960.jpg",
-            "https://zoodmall.com/cdn-cgi/image/w=500,fit=contain,f=auto/https://images2.zoodmall.com/https%3A/www.higalo.com/DynamicImages/ProductsImages/Product-Media-Pic-405-637486349617672328.jpg",
+          SizedBox(height: 30),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.blue.shade700,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(40),
+                topRight: Radius.circular(40),
+              ),
+            ),
+            child: Column(
+              children: [
+                SizedBox(height: 20),
+                _buildViewMore(),
+                SizedBox(height: 20),
+                _buildProductRow(
+                  "https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/MSFT-surfacelaptopgo2-mobile-hero-RE4Ypdj?scl=1",
+                  "https://static.skyassets.com/contentstack/assets/blt143e20b03d72047e/blt1c33e1158f1c5ecf/6319d97c454b1c2ebb3f4037/Carousel_iPhone14Plus_Purple_Placement01-PreOrder.png",
+                ),
+                SizedBox(height: 20),
+                _buildProductRow(
+                  "https://files.refurbed.com/pi/asus-zenbook-14-i5-1592206960.jpg",
+                  "https://zoodmall.com/cdn-cgi/image/w=500,fit=contain,f=auto/https://images2.zoodmall.com/https%3A/www.higalo.com/DynamicImages/ProductsImages/Product-Media-Pic-405-637486349617672328.jpg",
+                ),
+                SizedBox(height:30)
+              ],
+            ),
           ),
         ],
       ),
@@ -45,12 +61,18 @@ class _SearchState extends State<Search> {
 
   Widget _buildHeader() {
     return Container(
-      color: Colors.blue.shade700,
+      decoration: BoxDecoration(
+        color: Colors.blue.shade700,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10),
+        ),
+      ),
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
@@ -60,6 +82,7 @@ class _SearchState extends State<Search> {
                   fontSize: 32,
                   color: Colors.white,
                 ),
+                textAlign: TextAlign.center,
               ),
             ],
           ),
@@ -140,8 +163,16 @@ class _SearchState extends State<Search> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text("View More", style: TextStyle(color: Colors.black)),
-          Icon(Icons.arrow_circle_right, color: Colors.black),
+          Text("View More", style: TextStyle(color: Colors.white)),
+          GestureDetector(
+            child: Icon(Icons.arrow_circle_right, color: Colors.white),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Store()),
+              );
+            },
+          )
         ],
       ),
     );

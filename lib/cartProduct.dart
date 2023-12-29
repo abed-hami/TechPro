@@ -20,6 +20,8 @@ class CartProduct{
               price == other.price &&
               img == other.img ;
 
+
+
   @override
   int get hashCode =>
       id.hashCode ^
