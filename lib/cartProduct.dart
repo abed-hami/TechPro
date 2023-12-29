@@ -18,16 +18,14 @@ class CartProduct{
               id == other.id &&
               name == other.name &&
               price == other.price &&
-              img == other.img &&
-              total == other.total;
+              img == other.img ;
 
   @override
   int get hashCode =>
       id.hashCode ^
       name.hashCode ^
       price.hashCode ^
-      img.hashCode ^
-      total.hashCode ;
+      img.hashCode ;
 
   void booly(bool x, List<dynamic> y){
     if(x){

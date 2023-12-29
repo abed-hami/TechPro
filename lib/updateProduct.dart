@@ -128,43 +128,47 @@ class _EditProductState extends State<EditProduct> {
       appBar: AppBar(
         title: Text('Update Product'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text('Product ID: ${widget.productId}'),
-            TextField(
-              controller: nameController,
-              decoration: InputDecoration(labelText: 'Name'),
-            ),
+      body: SingleChildScrollView(
+        child:  Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text('Product ID: ${widget.productId}'),
+              TextField(
+                controller: nameController,
+                decoration: InputDecoration(labelText: 'Name'),
+              ),
 
-            TextField(
-              controller: priceController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Price'),
-            ),
-            TextField(
-              controller: descriptionController,
-              decoration: InputDecoration(labelText: 'Description'),
-            ),
-            TextField(
-              controller: quantityController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Quantity'),
-            ),
-            TextField(
-              controller: imageController,
-              decoration: InputDecoration(labelText: 'Image URL'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: updateProduct,
-              child: Text('Update Product'),
-            ),
-          ],
+              TextField(
+                controller: priceController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: 'Price'),
+              ),
+              TextField(
+                controller: descriptionController,
+                decoration: InputDecoration(labelText: 'Description'),
+              ),
+              TextField(
+                controller: quantityController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: 'Quantity'),
+              ),
+              TextField(
+                controller: imageController,
+                decoration: InputDecoration(labelText: 'Image URL'),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: updateProduct,
+                child: Text('Update Product'),
+              ),
+            ],
+          ),
         ),
-      ),
+      )
+
+
     );
   }
 }
