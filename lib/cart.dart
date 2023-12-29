@@ -1,5 +1,8 @@
+import 'dart:core';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:techprostore/userlogin.dart';
 
 import 'cartProduct.dart';
 
@@ -19,6 +22,8 @@ class _CartDisplayState extends State<CartDisplay> {
       ),
     );
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +77,9 @@ class _CartDisplayState extends State<CartDisplay> {
                 SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () {
-                    _showSnackBar("Order confirmed");
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) =>  LoginScreen()));
+
                   },
                   child: Text("Confirm Order"),
                 ),
