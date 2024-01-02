@@ -1,16 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'admin_addproduct.dart';
 import 'adminproducts.dart';
-
+EncryptedSharedPreferences _encryptedData = EncryptedSharedPreferences();
 class Admin extends StatelessWidget {
   const Admin({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Admin Dashboard"),),
+      appBar:  AppBar(actions: [
+        IconButton(onPressed: () {
+          _encryptedData.remove('admin').then((success) =>
+              Navigator.of(context).pop());
+        }, icon: const Icon(Icons.logout))
+      ],
+        title: const Text('Admin Page'),
+        centerTitle: true,
+        // the below line disables the back button on the AppBar
+        automaticallyImplyLeading: false,
+      ),
         body:
         Column(
               children:[

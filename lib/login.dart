@@ -25,30 +25,35 @@ class _LoginState extends State<Login> {
     }
   }
 
-  Future<void> checkLogin() async {
-    if (_controller.text.toString().trim() == '') {
-      update(false);
-    } else {
-      try {
-        await _encryptedData.setString(
-          'myKey',
-          _controller.text.toString(),
-        );
-        update(true);
-      } catch (e) {
-        update(false);
-      }
-    }
-  }
+
 
   void checkSavedData() async {
-    final myKey = await _encryptedData.getString('myKey');
+    final myKey = await _encryptedData.getString('admin');
     if (myKey != null && myKey.isNotEmpty) {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => const Admin(),
         ),
       );
+    }
+  }
+
+  checkLogin() async {
+    // make sure the key is not empty
+    if (_controller.text.toString().trim() == '') {
+      update(false);
+    } else {
+      // attempt to save key. Saving the key and encrypting it takes time.
+      // so it is done asynchronously
+      _encryptedData
+          .setString('admin', _controller.text.toString())
+          .then((bool success) { // then is equivalent to using wait
+        if (success) {
+          update(true);
+        } else {
+          update(false);
+        }
+      });
     }
   }
 
