@@ -183,19 +183,19 @@ class _AddCategoryState extends State<AddCategory> {
                   onPressed: _loading
                       ? null
                       : () {
-                    setState(() {
-                      _loading = true;
-                    });
-                    saveCategory(
-                      update,
-                      _controllerName.text.toString(),
-                      int.parse(_controllerQuantity.text),
-                      int.parse(_controllerPrice.text),
-                      _controllerDescription.text.toString(),
-                      selectedValue!,
-                      _controllerImage.text.toString(),
-                    );
-                  },
+                          setState(() {
+                            _loading = true;
+                          });
+                          saveCategory(
+                            update,
+                            _controllerName.text.toString(),
+                            int.parse(_controllerQuantity.text),
+                            int.parse(_controllerPrice.text),
+                            _controllerDescription.text.toString(),
+                            selectedValue!,
+                            _controllerImage.text.toString(),
+                          );
+                        },
                   child: const Text('Submit'),
                 ),
                 const SizedBox(height: 10),
@@ -213,29 +213,31 @@ class _AddCategoryState extends State<AddCategory> {
 }
 
 void saveCategory(
-    Function(String text) update,
-    String name,
-    int quantity,
-    int price,
-    String description,
-    int category,
-    String image,
-    ) async {
+  Function(String text) update,
+  String name,
+  int quantity,
+  int price,
+  String description,
+  int category,
+  String image,
+) async {
   try {
-    final response = await http.post(
-      Uri.parse('$_baseURL/save.php'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: convert.jsonEncode({
-        'name': name,
-        'quantity': quantity,
-        'price': price,
-        'description': description,
-        'category': category,
-        'image': image,
-      }),
-    ).timeout(const Duration(seconds: 5));
+    final response = await http
+        .post(
+          Uri.parse('$_baseURL/save.php'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: convert.jsonEncode({
+            'name': name,
+            'quantity': quantity,
+            'price': price,
+            'description': description,
+            'category': category,
+            'image': image,
+          }),
+        )
+        .timeout(const Duration(seconds: 5));
     if (response.statusCode == 200) {
       update(response.body);
     }
